@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>{{.Title}}</title>
+</head>
+<body>
+<ul>
+{{range .MainMenu}}<li style="display:table-cell;padding:10px;"><a href="{{.Link}}">{{$.i18n.Tr .Title}}</a>{{if eq $.url.RequestURI .Link}}<ul>{{range .Items}}
+<li><a href="{{.Link}}">{{$.i18n.Tr .Title}}</a></li>{{end}}
+</ul>{{end}}</li>{{end}}</ul>
+{{.Flash.SuccessMsg}}
+{{yield}}
+</body>
+</html>
