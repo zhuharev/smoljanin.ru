@@ -58,5 +58,5 @@ func runWeb(c *cli.Context) {
 	m.Any("/cat/submit", catalog.Submit)
 	m.Get("/cat/:id", catalog.Show)
 
-	m.Run()
+	m.Run(5000)
 }
