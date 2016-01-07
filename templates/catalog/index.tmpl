@@ -1,0 +1,16 @@
+{{range .sites}}
+<li><a href="/cat/{{.Id}}">{{printf "%d %s" .Id .Title}}</a></li>
+{{end}}
+{{if not .paginater.IsFirst}}<a href="/cat">Первая</a>{{end}}
+{{if .paginater.HasPrevious}}<a href="/cat/page/{{.paginater.Previous}}">Сюда</a>{{end}}
+
+{{range .paginater.Pages}}
+    {{if eq .Num -1}}
+    ...
+    {{else}}
+    <a href="/cat/page/{{.Num}}" {{if .IsCurrent}}class="active"{{end}}>{{.Num}}</a>
+    {{end}}
+{{end}}
+
+{{if .paginater.HasNext}}<a href="/cat/page/{{.paginater.Next}}">Туда</a>{{end}}
+{{if not .paginater.IsLast}}<a href="/cat/page/{{.paginater.TotalPages}}">Последняя</a>{{end}}

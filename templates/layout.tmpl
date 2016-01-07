@@ -3,13 +3,19 @@
 <head>
 	<meta charset="UTF-8">
 	<title>{{.Title}}</title>
+	<style>
+.active {
+	font-weight: bold;
+}
+	</style>
 </head>
 <body>
 <ul>
 {{range .MainMenu}}<li style="display:table-cell;padding:10px;"><a href="{{.Link}}">{{$.i18n.Tr .Title}}</a>{{if eq $.url.RequestURI .Link}}<ul>{{range .Items}}
 <li><a href="{{.Link}}">{{$.i18n.Tr .Title}}</a></li>{{end}}
 </ul>{{end}}</li>{{end}}</ul>
-{{.Flash.SuccessMsg}}
+{{if .Flash.SuccessMsg}}Success: {{.Flash.SuccessMsg}}{{end}}
+{{if .Flash.ErrorMsg}}Error: {{.Flash.ErrorMsg}}{{end}}
 {{yield}}
 </body>
 </html>

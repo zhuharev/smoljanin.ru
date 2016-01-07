@@ -13,7 +13,7 @@ import (
 
 	"gopkg.in/ldap.v2"
 
-	"github.com/gogits/gogs/modules/log"
+	"github.com/zhuharev/smoljanin.ru/modules/log"
 )
 
 // Basic LDAP authentication service
