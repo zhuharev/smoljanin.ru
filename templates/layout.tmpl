@@ -3,19 +3,32 @@
 <head>
 	<meta charset="UTF-8">
 	<title>{{.Title}}</title>
-	<style>
-.active {
-	font-weight: bold;
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+.box {
+	margin: 0 auto;
+	width: 800px;
 }
-	</style>
+</style>
+<script>
+function init(){
+(function(d){d.loadCSS=function(g,h,c){c=d.document;var b=c.createElement("link"),a;a=(c.body||c.getElementsByTagName("head")[0]).childNodes;a=a[a.length-1];var f=c.styleSheets;b.rel="stylesheet";b.href=g;b.media="only x";a.parentNode.insertBefore(b,h?a:a.nextSibling);var e=function(a){for(var c=b.href,d=f.length;d--;)if(f[d].href===c)return a();setTimeout(function(){e(a)})};b.onloadcssdefined=e;e(function(){b.media="all"});return b}})(window);
+loadCSS("/s.css");
+(new Image).src="//stat.zhuharev.ru/hit?r"+escape(document.referrer)+";u"+escape(document.URL)+";"+Math.random()
+}
+window.onload=init;
+</script>
 </head>
 <body>
+<div class="box">
 <ul>
 {{range .MainMenu}}<li style="display:table-cell;padding:10px;"><a href="{{.Link}}">{{$.i18n.Tr .Title}}</a>{{if eq $.url.RequestURI .Link}}<ul>{{range .Items}}
 <li><a href="{{.Link}}">{{$.i18n.Tr .Title}}</a></li>{{end}}
 </ul>{{end}}</li>{{end}}</ul>
 {{if .Flash.SuccessMsg}}Success: {{.Flash.SuccessMsg}}{{end}}
-{{if .Flash.ErrorMsg}}Error: {{.Flash.ErrorMsg}}{{end}}
+{{if .Flash.ErrorMsg}}Error: {{.Flash.ErrorMsg}}{{end}}	
+</div>
+
 {{yield}}
 </body>
 </html>

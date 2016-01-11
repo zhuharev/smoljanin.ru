@@ -34,6 +34,7 @@ func newMacaron() *macaron.Macaron {
 	m.Use(csrf.Csrfer())
 	m.Use(macaron.Static("static"))
 	m.Use(macaron.Static("data/uploads"))
+	m.Use(macaron.Static("data/public", macaron.StaticOptions{Prefix: "public"}))
 
 	m.Use(i18n.I18n(i18n.Options{
 		Langs: []string{"en-US", "ru-RU"},
@@ -57,6 +58,10 @@ func runWeb(c *cli.Context) {
 	m.Get("/cat/page/:p", catalog.Index)
 	m.Any("/cat/submit", catalog.Submit)
 	m.Get("/cat/:id", catalog.Show)
+	m.Get("/cat/screen/:id", catalog.Screen)
+	m.Get("/resize/*", catalog.Resize)
+
+	m.Post("/upload", controllers.Upload)
 
 	m.Run(5000)
 }

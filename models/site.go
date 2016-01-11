@@ -2,6 +2,7 @@ package models
 
 import (
 	"fmt"
+	"github.com/Unknwon/com"
 	"github.com/fatih/color"
 	"net/url"
 	"strings"
@@ -23,6 +24,13 @@ type Site struct {
 	Created   time.Time
 	Deleted   time.Time
 	Updated   time.Time
+}
+
+func (s Site) Preview() string {
+	if s.PreviewUrl != "" {
+		return s.PreviewUrl
+	}
+	return "/cat/screen/" + com.ToStr(s.Id)
 }
 
 func NewSite(link, title string) (*Site, error) {
@@ -59,6 +67,11 @@ func HasSite(host string) (has bool, e error) {
 	s := new(Site)
 	s.Domain = host
 	return x.Cols("id").Get(s)
+}
+
+func SaveSite(s *Site) error {
+	_, e := x.Id(s.Id).Update(s)
+	return e
 }
 
 func SiteList(page int) (res []*Site, e error) {
