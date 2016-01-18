@@ -3,4 +3,5 @@
 <img style="width:300px;height:150px;" src="/resize{{.site.Preview}}?width=300" alt="">
 <br>
 <a href="http://{{.site.Domain}}">{{.site.Domain}}</a>	
+{{if .site.HasFeed}} <h2><a href="/cat/{{.site.Id}}/feed">Новости сайта</a></h2> {{end}}
 </div>

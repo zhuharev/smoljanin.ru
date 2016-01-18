@@ -6,7 +6,9 @@ import (
 	"github.com/go-macaron/csrf"
 	"github.com/go-macaron/i18n"
 	"github.com/go-macaron/session"
+	"github.com/zhuharev/smoljanin.ru/modules/base"
 	"gopkg.in/macaron.v1"
+	"html/template"
 
 	"github.com/zhuharev/smoljanin.ru/controllers"
 	"github.com/zhuharev/smoljanin.ru/controllers/catalog"
@@ -28,7 +30,11 @@ and it takes care of all the other things for you`,
 
 func newMacaron() *macaron.Macaron {
 	m := macaron.New()
-	m.Use(macaron.Renderer(macaron.RenderOptions{Layout: "layout"}))
+	m.Use(macaron.Renderer(macaron.RenderOptions{Layout: "layout",
+		Funcs: []template.FuncMap{{
+			"markdown": base.Markdown,
+			"raw":      func(s string) template.HTML { return template.HTML(s) },
+		}}}))
 	m.Use(cache.Cacher())
 	m.Use(session.Sessioner())
 	m.Use(csrf.Csrfer())
@@ -54,11 +60,20 @@ func runWeb(c *cli.Context) {
 	m := newMacaron()
 
 	m.Get("/", controllers.Home)
-	m.Get("/cat", catalog.Index)
-	m.Get("/cat/page/:p", catalog.Index)
-	m.Any("/cat/submit", catalog.Submit)
-	m.Get("/cat/:id", catalog.Show)
-	m.Get("/cat/screen/:id", catalog.Screen)
+	m.Group("/cat", func() {
+		m.Get("/", catalog.Index)
+		m.Get("/page/:p", catalog.Index)
+		m.Get("/:id", catalog.Show).Name("cat_item")
+		m.Get("/:id/feed", catalog.Feed)
+		m.Get("/:id/feed/page/:p", catalog.Feed)
+		m.Get("/:id/feed/:feedId", catalog.FeedShow)
+		m.Get("/screen/:id", catalog.Screen)
+
+		m.Get("/:id/setfeed", catalog.SetFeed).Name("set_feed")
+
+		m.Any("/submit", catalog.Submit)
+	})
+
 	m.Get("/resize/*", catalog.Resize)
 
 	m.Post("/upload", controllers.Upload)

@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"github.com/zhuharev/smoljanin.ru/models"
+	"github.com/zhuharev/smoljanin.ru/modules/linkpreview"
 	"github.com/zhuharev/smoljanin.ru/modules/menu"
 	"github.com/zhuharev/smoljanin.ru/modules/setting"
 )
@@ -13,4 +14,5 @@ func GlobalInit() {
 		panic(e)
 	}
 	menu.NewContext()
+	linkpreview.NewContext()
 }

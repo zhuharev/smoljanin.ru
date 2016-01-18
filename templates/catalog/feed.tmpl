@@ -1,0 +1,20 @@
+<div class="box">
+{{range .feed}}
+{{.Published}}
+<a href="/cat/{{.SiteId}}/feed/{{.Id}}">{{.Title}}</a><br>
+{{end}}
+
+{{if not .paginater.IsFirst}}<a href="/cat/{{$.SiteId}}/feed">Первая</a>{{end}}
+{{if .paginater.HasPrevious}}<a href="/cat/{{$.SiteId}}/feed/page/{{.paginater.Previous}}">Сюда</a>{{end}}
+{{range .paginater.Pages}}
+    {{if eq .Num -1}}
+    ...
+    {{else}}
+	{{if eq .Num 1}}<a href="/cat/{{$.SiteId}}/feed">1</a>{{else}}
+    <a href="/cat/{{$.SiteId}}/feed/page/{{.Num}}" {{if .IsCurrent}}class="active"{{end}}>{{.Num}}</a>
+    {{end}}{{end}}
+{{end}}
+
+{{if .paginater.HasNext}}<a href="/cat/{{$.SiteId}}/feed/page/{{.paginater.Next}}">Туда</a>{{end}}
+{{if not .paginater.IsLast}}<a href="/cat/{{$.SiteId}}/feed/page/{{.paginater.TotalPages}}">Последняя</a>{{end}}		
+</div>

@@ -337,3 +337,7 @@ func RenderMarkdown(rawBytes []byte, urlPrefix string, metas map[string]string) 
 func RenderMarkdownString(raw, urlPrefix string, metas map[string]string) string {
 	return string(RenderMarkdown([]byte(raw), urlPrefix, metas))
 }
+
+func Markdown(raw string) string {
+	return string(RenderMarkdownString(raw, "", nil))
+}

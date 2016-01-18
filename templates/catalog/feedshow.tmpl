@@ -1,0 +1,5 @@
+<div class="box">
+<h1>{{.feed.Title}}</h1>
+{{raw (markdown .feed.Body)}}
+<a href="{{.feed.Source}}">Источник</a>
+</div>

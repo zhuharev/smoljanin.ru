@@ -18,7 +18,7 @@ import (
 	"github.com/go-xorm/xorm"
 	_ "github.com/lib/pq"
 
-	//"github.com/zhuharev/smoljanin.ru/models/migrations"
+	"github.com/zhuharev/smoljanin.ru/models/migrations"
 	"github.com/zhuharev/smoljanin.ru/modules/log"
 )
 
@@ -77,7 +77,7 @@ var (
 )
 
 func init() {
-	tables = append(tables, new(Site)) /*new(User), new(PublicKey), new(AccessToken),
+	tables = append(tables, new(Site), new(SiteFeed)) /*new(User), new(PublicKey), new(AccessToken),
 	new(Repository), new(DeployKey), new(Collaboration), new(Access),
 	new(Watch), new(Star), new(Follow), new(Action),
 	new(Issue), new(PullRequest), new(Comment), new(Attachment), new(IssueUser),
@@ -203,9 +203,9 @@ func NewEngine() (err error) {
 		return err
 	}
 
-	/*if err = migrations.Migrate(x); err != nil {
+	if err = migrations.Migrate(x); err != nil {
 		return fmt.Errorf("migrate: %v", err)
-	}*/
+	}
 
 	if err = x.StoreEngine("InnoDB").Sync2(tables...); err != nil {
 		return fmt.Errorf("sync database struct error: %v\n", err)

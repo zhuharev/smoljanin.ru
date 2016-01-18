@@ -18,12 +18,16 @@ type Site struct {
 
 	PreviewUrl string
 
+	HasFeed bool
+
 	Processed bool
 	AliasTo   int64
 	AddedBy   int64
-	Created   time.Time
-	Deleted   time.Time
-	Updated   time.Time
+
+	FeedFetched time.Time
+	Created     time.Time
+	Deleted     time.Time
+	Updated     time.Time
 }
 
 func (s Site) Preview() string {
@@ -87,4 +91,11 @@ func SiteCount() (int64, error) {
 	c, e := x.Count(new(Site))
 	color.Green("Total sites %d", c)
 	return c, e
+}
+
+func SiteSetHasFeed(id int64, hf bool) error {
+	s := new(Site)
+	s.HasFeed = hf
+	_, e := x.Id(id).Cols("has_feed").Update(s)
+	return e
 }
