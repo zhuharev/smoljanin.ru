@@ -106,7 +106,10 @@ func screen(siteId int64) (string, error) {
 		return "", e
 	}
 	defer f.Close()
-	io.Copy(f, rdr)
+	_, e = io.Copy(f, rdr)
+	if e != nil {
+		return "", e
+	}
 
 	fp := filepath.Join("/", makePaths(name), "/", name)
 	site.PreviewUrl = fp

@@ -6,6 +6,7 @@ import (
 	"github.com/zhuharev/smoljanin.ru/models"
 	"github.com/zhuharev/smoljanin.ru/modules/linkpreview"
 	"github.com/zhuharev/smoljanin.ru/modules/middleware"
+	"time"
 )
 
 func Feed(c *middleware.Context) {
@@ -53,6 +54,10 @@ func FeedShow(c *middleware.Context) {
 	a, e := linkpreview.Articler.ParseArticle(sf.Source, []byte(sf.Body))
 	if e != nil {
 		color.Red("%s", e)
+	}
+	if !sf.Published.Equal(a.Published.In(time.Now().Location())) {
+		sf.Published = a.Published.In(time.Now().Location())
+		models.SaveSiteFeed(sf)
 	}
 	sf.Body = a.Text
 	c.Data["feed"] = sf

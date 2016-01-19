@@ -1,6 +1,6 @@
 <div class="box">
 {{range .feed}}
-{{.Published}}
+{{momentDiff .Published}}
 <a href="/cat/{{.SiteId}}/feed/{{.Id}}">{{.Title}}</a><br>
 {{end}}
 

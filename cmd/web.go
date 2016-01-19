@@ -7,8 +7,10 @@ import (
 	"github.com/go-macaron/i18n"
 	"github.com/go-macaron/session"
 	"github.com/zhuharev/smoljanin.ru/modules/base"
+	"github.com/zhuharev/smoljanin.ru/modules/since"
 	"gopkg.in/macaron.v1"
 	"html/template"
+	"time"
 
 	"github.com/zhuharev/smoljanin.ru/controllers"
 	"github.com/zhuharev/smoljanin.ru/controllers/catalog"
@@ -34,6 +36,9 @@ func newMacaron() *macaron.Macaron {
 		Funcs: []template.FuncMap{{
 			"markdown": base.Markdown,
 			"raw":      func(s string) template.HTML { return template.HTML(s) },
+			"momentDiff": func(t time.Time) string {
+				return since.Since(t)
+			},
 		}}}))
 	m.Use(cache.Cacher())
 	m.Use(session.Sessioner())
