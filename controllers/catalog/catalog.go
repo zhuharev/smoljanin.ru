@@ -93,6 +93,9 @@ func screen(siteId int64) (string, error) {
 	}
 
 	rdr, e := shot.Shot(site.Domain)
+	if e != nil {
+		return "", e
+	}
 
 	name := uuid.NewV4().String()
 
