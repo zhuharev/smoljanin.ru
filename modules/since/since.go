@@ -25,11 +25,28 @@ func Since(t time.Time) string {
 
 	if hs := int(s.Hours()); hs < 22 {
 		return i18n.Tr("ru-RU", "%d %s назад", hs, plural("час_часа_часов", hs))
-	} else {
+	} else if hs < 28 {
 		return fmt.Sprintf("вчера")
 	}
 
-	return s.String()
+	if ds := int(s.Days()); ds < 6 {
+		return fmt.Sprintf("%d %s назад", ds, plural("день_дня_дней", ds))
+	} else if ds < 8 {
+		return fmt.Sprintf("неделю назад")
+	}
+
+	if ws := int(s.Weeks()); ws < 3 {
+		return fmt.Sprintf("%d %s назад", ws+1, plural("неделя_недели_недель", ws+1))
+	} else if ws < 5 {
+		return "месяц назад"
+	}
+	if ms := int(s.Months()); ms < 11 {
+		return fmt.Sprintf("%d %s назад", ms+1, plural("месяц_месяца_месяцев", ms+1))
+	} else if ms < 14 {
+		return "год назад"
+	}
+
+	return fmt.Sprintf("%d %s назад", s.Years(), plural("год_года_лет", s.Years()))
 }
 
 func plural(word string, num int) string {
@@ -58,19 +75,19 @@ func (s since) Hours() int {
 }
 
 func (s since) Days() int {
-	return int(math.Floor(float64(s.Seconds()) / 86400))
+	return int(math.Floor(float64(s.Seconds()) / 86400.0))
 }
 
 func (s since) Weeks() int {
-	return int(math.Floor(float64(s.Days() / 7)))
+	return int(math.Floor(float64(s.Days()) / 7.0))
 }
 
 func (s since) Months() int {
-	return int(math.Floor(float64(s.Weeks()) / 4))
+	return int(math.Floor(float64(s.Weeks()) / 4.0))
 }
 
 func (s since) Years() int {
-	return int(math.Floor(float64(s.Days()) / 365))
+	return int(math.Floor(float64(s.Days()) / 365.0))
 }
 
 func (s since) String() string {
