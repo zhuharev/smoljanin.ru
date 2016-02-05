@@ -43,6 +43,7 @@ func Show(c *middleware.Context) {
 	if e != nil {
 		color.Red("%s", e)
 	}
+	go models.SiteFetchNewFeed(site.Id)
 	c.Data["site"] = site
 	c.Data["Title"] = site.Title
 	c.HTML(200, "catalog/show")

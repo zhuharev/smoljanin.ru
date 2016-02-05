@@ -97,6 +97,20 @@ func NewSiteFeedFromArticle(art *articler.Article) *SiteFeed {
 	return sf
 }
 
+func GetFeed(p int) ([]*SiteFeed, error) {
+	var (
+		res      []*SiteFeed
+		pageSize = 10
+	)
+	e := x.OrderBy("published desc").Limit(pageSize, pageSize*(p-1)).Find(&res)
+	return res, e
+}
+
+func FeedCount() (int64, error) {
+	s := new(SiteFeed)
+	return x.Count(s)
+}
+
 func GetSiteFeed(siteId int64, p int) ([]*SiteFeed, error) {
 	var (
 		res      []*SiteFeed

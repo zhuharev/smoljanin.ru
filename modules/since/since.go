@@ -25,7 +25,7 @@ func Since(t time.Time) string {
 
 	if hs := int(s.Hours()); hs < 22 {
 		return i18n.Tr("ru-RU", "%d %s назад", hs, plural("час_часа_часов", hs))
-	} else if hs < 28 {
+	} else if hs < 36 {
 		return fmt.Sprintf("вчера")
 	}
 

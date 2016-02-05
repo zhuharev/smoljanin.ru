@@ -40,6 +40,20 @@ func newMacaron() *macaron.Macaron {
 				return since.Since(t)
 			},
 		}}}))
+	/*	m.Use(func(c *macaron.Context) {
+		if strings.HasSuffix(c.Req.URL.Path, ".json") {
+			color.Green("JSON")
+
+			c.Req.Request.URL
+
+			c.Req.URL.Path = strings.TrimSuffix(c.Req.URL.Path, ".json")
+			c.Req.URL.RawPath = strings.TrimSuffix(c.Req.URL.RawPath, ".json")
+			c.Req.RequestURI = c.Req.URL.RequestURI()
+
+			c.Data["json"] = true
+		}
+		c.Next()
+	})*/
 	m.Use(cache.Cacher())
 	m.Use(session.Sessioner())
 	m.Use(csrf.Csrfer())
@@ -65,6 +79,9 @@ func runWeb(c *cli.Context) {
 	m := newMacaron()
 
 	m.Get("/", controllers.Home)
+	m.Get("/feed.json", catalog.AllFeedJSON)
+	m.Get("/ok.json", func(c *macaron.Context) { c.JSON(200, "ok") })
+
 	m.Group("/cat", func() {
 		m.Get("/", catalog.Index)
 		m.Get("/page/:p", catalog.Index)

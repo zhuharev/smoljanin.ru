@@ -25,11 +25,50 @@ func Feed(c *middleware.Context) {
 		color.Red("%s", e)
 	}
 
-	go models.SiteFetchNewFeed(sid)
 	c.Data["feed"] = feed
 	c.Data["paginater"] = paginater.New(int(cnt), 10, p, 5)
 	c.Data["SiteId"] = sid
 	c.HTML(200, "catalog/feed")
+}
+
+func AllFeed(c *middleware.Context) {
+	p := c.ParamsInt(":p")
+	if p < 1 {
+		p = 1
+	}
+	feed, e := models.GetFeed(p)
+	if e != nil {
+		color.Red("%s", e)
+	}
+
+	cnt, e := models.FeedCount()
+	if e != nil {
+		color.Red("%s", e)
+	}
+
+	c.Data["feed"] = feed
+	c.Data["paginater"] = paginater.New(int(cnt), 10, p, 5)
+	c.HTML(200, "catalog/feed")
+}
+
+func AllFeedJSON(c *middleware.Context) {
+	p := c.QueryInt("p")
+	if p < 1 {
+		p = 1
+	}
+	feed, e := models.GetFeed(p)
+	if e != nil {
+		color.Red("%s", e)
+	}
+
+	/*cnt, e := models.FeedCount()
+	if e != nil {
+		color.Red("%s", e)
+	}*/
+
+	c.Data["feed"] = feed
+	//c.Data["paginater"] = paginater.New(int(cnt), 10, p, 5)
+	c.JSON(200, feed)
 }
 
 func SetFeed(c *middleware.Context) {
